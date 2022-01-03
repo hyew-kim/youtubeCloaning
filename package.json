@@ -1,0 +1,16 @@
+{
+  "name": "youtubecloaning",
+  "version": "1.0.0",
+  "description": "The best way to watch movie",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hyew-kim/youtubeCloaning.git"
+  },
+  "author": "hyewkim",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hyew-kim/youtubeCloaning/issues"
+  },
+  "homepage": "https://github.com/hyew-kim/youtubeCloaning#readme"
+}
