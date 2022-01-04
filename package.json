@@ -2,15 +2,26 @@
   "name": "youtubecloaning",
   "version": "1.0.0",
   "description": "The best way to watch movie",
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hyew-kim/youtubeCloaning.git"
+  },
+  "scripts": {
+    "dev": "nodemon --exec babel-node index.js"
   },
   "author": "hyewkim",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/hyew-kim/youtubeCloaning/issues"
   },
-  "homepage": "https://github.com/hyew-kim/youtubeCloaning#readme"
+  "homepage": "https://github.com/hyew-kim/youtubeCloaning#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.7",
+    "@babel/node": "^7.16.7",
+    "@babel/preset-env": "^7.16.7",
+    "nodemon": "^2.0.15"
+  }
 }
