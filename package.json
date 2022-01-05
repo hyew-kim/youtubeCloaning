@@ -7,7 +7,7 @@
     "url": "git+https://github.com/hyew-kim/youtubeCloaning.git"
   },
   "scripts": {
-    "dev": "nodemon --exec babel-node index.js"
+    "dev": "nodemon --exec babel-node src/server.js"
   },
   "author": "hyewkim",
   "license": "MIT",
