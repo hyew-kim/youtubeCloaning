@@ -8,17 +8,18 @@
 
 /search -> Search
 
+/users/:id -> See user
 
-/users/edit -> Edit user
+/users/logout -> Log Out
 
-/users/delete -> Delete user
+/users/edit -> Edit My Profile
 
-/videos/watch -> Watch Video
+/users/delete -> Delete My Profile
 
-/videos/edit -> Edit Video
+/videos/:id -> see Video
 
-/videos/delete -> Delete Video
+/videos/:id/edit -> Edit Video
 
-/videos/comments -> Comment on a video
+/videos/:id/delete -> Delete Video
 
-/videos/comments/delete -> Delete A Comment of a Video
+/videos/upload -> Upload Video
