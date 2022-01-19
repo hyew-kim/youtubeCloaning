@@ -11,19 +11,32 @@ export const home = async (req, res) => {
   const videos = await Video.find({});
   return res.render('home', { pageTitle: 'Home', videos });
 };
-export const watch = (req, res) => {
+export const watch = async (req, res) => {
   //const id = req.params.id;
   const { id } = req.params;
-  return res.render('watch', { pageTitle: `Watching ${video.title}` });
+  const video = await Video.findById(id);
+  if (video) {
+    return res.render('watch', { pageTitle: video.title, video });
+  }
+  return res.render('404', { pageTitle: 'Video Not Found' });
 };
-export const getEdit = (req, res) => {
+export const getEdit = async (req, res) => {
   const { id } = req.params;
-  const video = videos[id - 1];
-  return res.render('edit', { pageTitle: `Editing: ${video.title}` });
+  const video = await Video.findById(id);
+  if (!video) return res.render('404', { pageTitle: 'Video Not Found' });
+  return res.render('edit', { pageTitle: `Editing: ${video.title}`, video });
 };
-export const postEdit = (req, res) => {
+export const postEdit = async (req, res) => {
   const { id } = req.params;
-  const title = req.body.title;
+  const { title, description, hashtags } = req.body;
+  const video = await Video.exists({ _id: id }); //filter
+  if (!video) return res.render('404', { pageTitle: 'Video Not Found' });
+  await Video.findByIdAndUpdate(id, {
+    title,
+    description,
+    hashtags: Video.formatHashtags(hashtags),
+  });
+
   return res.redirect(`/videos/${id}`);
 };
 export const getUpload = (req, res) => {
@@ -36,7 +49,7 @@ export const postUpload = async (req, res) => {
     await Video.create({
       title, //title: title
       description,
-      hashtags: hashtags.split(',').map((word) => (!word.trim().startsWith('#') ? `#${word.trim()}` : word.trim())),
+      hashtags: Video.formatHashtags(hashtags),
     });
     return res.redirect('/');
   } catch (error) {
@@ -47,6 +60,9 @@ export const postUpload = async (req, res) => {
 
   //get("/video/upload/")-> form submit -> post request ("video/upload")-> redirect("/") (home page get해오라는 의미임!!)-> trending controller call 즉, get request ("/")*
 };
+export const remove = async (req, res) => {
+  const { id } = req.params;
+  await Video.findByIdAndDelete(id);
+  return res.redirect('/');
+};
 export const search = (req, res) => res.send('Search');
-export const upload = (req, res) => res.send('Upload');
-export const remove = (req, res) => res.send('Remove video');
