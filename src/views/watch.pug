@@ -3,7 +3,12 @@ extends base.pug
 block content
 	div
 		p=video.description
+		ul
+		each tag in video.hashtags
+			li=tag
 		small=video.createAt
+		
+		br
 		a(href=`${video.id}/edit`) Edit video &rarr;
 		br
 		a(href=`${video.id}/remove`) Delete video &rarr;

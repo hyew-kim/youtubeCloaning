@@ -8,7 +8,7 @@ Video.find({}, (error, videos) => {
 });
 console.log('I finish first');*/
 export const home = async (req, res) => {
-  const videos = await Video.find({});
+  const videos = await Video.find({}).sort({ createAt: 1 });
   return res.render('home', { pageTitle: 'Home', videos });
 };
 export const watch = async (req, res) => {
@@ -65,4 +65,18 @@ export const remove = async (req, res) => {
   await Video.findByIdAndDelete(id);
   return res.redirect('/');
 };
-export const search = (req, res) => res.send('Search');
+export const search = async (req, res) => {
+  const { keyword } = req.query;
+  let videos = [];
+  if (keyword) {
+    videos = await Video.find({
+      title: {
+        $regex: new RegExp(keyword, 'i'),
+        //$regex: new RegExp(`^${keyword}`, 'i'), //i: 대소문자 구분X
+        //`${keyword}$`: keyword로 끝나는거 검색
+        //이건 mongoDB 기능
+      },
+    });
+  }
+  return res.render('search', { pageTitle: 'Search', videos });
+};

@@ -3,11 +3,11 @@ import { getUpload, postUpload, getEdit, remove, watch, postEdit } from '../cont
 
 const videoRouter = express.Router();
 
+videoRouter.get('/:id([0-9a-f]{24})', watch);
+videoRouter.route('/:id([0-9a-f]{24})/edit').get(getEdit).post(postEdit);
+videoRouter.get('/:id([0-9a-f]{24})/remove', remove);
 videoRouter.get('/upload', getUpload);
 videoRouter.post('/upload', postUpload);
-videoRouter.get('/:id', watch);
-videoRouter.route('/:id/edit').get(getEdit).post(postEdit);
-videoRouter.get('/:id/remove', remove);
 
 export default videoRouter;
 //controller -> route 순서로 작업하면 편한듯?
