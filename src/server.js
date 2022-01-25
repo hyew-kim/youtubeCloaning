@@ -1,6 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import session from 'express-session';
+import MongoStore from 'connect-mongo';
 import rootRouter from './routes/rootRouter';
 import userRouter from './routes/userRouter';
 import videoRouter from './routes/videoRouter';
@@ -17,14 +18,20 @@ app.set('views', process.cwd() + '/src/views');
 //app.use(middlerware이름)
 app.use(express.urlencoded({ extended: true }));
 
+//session이라는 middleware가 브라우저에 cookie를 전송 by express-session
 app.use(
   session({
-    secret: 'Hello!',
-    resave: true,
-    saveUninitialized: true,
+    secret: process.env.COOKIE_SECRET,
+    resave: false,
+    //항상 session에 쿠키 save
+    saveUninitialized: false,
+    /*cookie: {
+      maxAge: 20 * 1000,
+    },*/
+    store: MongoStore.create({ mongoUrl: process.env.DB_URL }),
   })
 );
-//session이라는 middleware가 브라우저에 cookie를 전송
+//req에 있는session의 정보를 res.locals로 옮김
 app.use(localMiddleware);
 app.use('/', rootRouter);
 app.use('/videos', videoRouter);
