@@ -53,17 +53,33 @@ export const getEdit = (req, res) => {
 export const postEdit = async (req, res) => {
   const {
     session: {
-      user: { _id }, //model instance생성 시 _id 자동으로 생성
+      user: { _id },
+      //model instance생성 시 _id 자동으로 생성
     },
     body: { email, username, name, location },
   } = req;
-  await User.findByIdAndUpdate(_id, {
-    email,
-    name,
-    username,
-    location,
-  });
-  return res.redirect('/users/edit');
+  //db에서 기존 data와 겹치는거 없는지
+  const existUsername = await User.exists({ username });
+  const existEmail = await User.exists({ email });
+  const pageTitle = 'Edit-profile';
+  if (username !== req.session.user.username) {
+    if (existUsername) return res.status(400).render('edit-profile', { pageTitle, errorMessage: 'Exits username' });
+  }
+  if (email !== req.session.user.email) {
+    if (existEmail) return res.status(400).render('edit-profile', { pageTitle, errorMessage: 'Exits  email' });
+  }
+  const updatedUser = await User.findByIdAndUpdate(
+    _id,
+    {
+      email,
+      name,
+      username,
+      location,
+    },
+    { new: true }
+  );
+  req.session.user = updatedUser;
+  return res.redirect('/users/edit-profile');
 };
 export const remove = (req, res) => res.send('Remove');
 export const logout = (req, res) => res.send('logout');
