@@ -47,7 +47,24 @@ export const postLogin = async (req, res) => {
   req.session.user = user;
   return res.redirect('/');
 };
-export const edit = (req, res) => res.send('Edit user');
+export const getEdit = (req, res) => {
+  return res.render('edit-profile', { pageTitle: 'Edit-profile' });
+};
+export const postEdit = async (req, res) => {
+  const {
+    session: {
+      user: { _id }, //model instance생성 시 _id 자동으로 생성
+    },
+    body: { email, username, name, location },
+  } = req;
+  await User.findByIdAndUpdate(_id, {
+    email,
+    name,
+    username,
+    location,
+  });
+  return res.redirect('/users/edit');
+};
 export const remove = (req, res) => res.send('Remove');
 export const logout = (req, res) => res.send('logout');
 export const see = (req, res) => res.send(`see profile ${req.params.id}`);

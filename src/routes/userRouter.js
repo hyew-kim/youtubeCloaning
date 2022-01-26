@@ -1,10 +1,11 @@
 import express from 'express';
-import { edit, remove, logout, see } from '../controllers/userController';
+import { remove, logout, see, getEdit, postEdit } from '../controllers/userController';
+import { protectorMiddleware } from '../middlewares';
 
 const userRouter = express.Router();
 
-userRouter.get('/edit', edit);
+userRouter.route('/edit-profile').all(protectorMiddleware).get(getEdit).post(postEdit);
 userRouter.get('/remove', remove);
-userRouter.get('/logout', logout);
+userRouter.get('/logout', protectorMiddleware, logout);
 userRouter.get('/:id', see);
 export default userRouter;

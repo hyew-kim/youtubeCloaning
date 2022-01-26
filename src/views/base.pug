@@ -11,12 +11,14 @@ html(lang="ko")
 				li
 					a(href="/") HOME
 				li
-					a(href="/videos/upload") UPLOAD
-				li
 					a(href="/search") SEARCH
 				if loggedIn
 					li
-						a(href="/logout") LOGOUT
+						a(href="/videos/upload") UPLOAD
+					li
+						a(href="/users/logout") LOGOUT
+					li
+						a(href="/users/edit-profile") EDIT
 					li
 						a(href="/my-profile") #{loggedInUser.name}의 Profile
 				else 
