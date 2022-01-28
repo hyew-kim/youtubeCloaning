@@ -35,6 +35,7 @@ app.use(
 app.use(localMiddleware);
 // /uploads로 가려고 한다면 uploads폴더 브라우저에게 공개
 app.use('/uploads', express.static('uploads'));
+app.use('/static', express.static('assets'));
 app.use('/', rootRouter);
 app.use('/videos', videoRouter);
 app.use('/users', userRouter);
