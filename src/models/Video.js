@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 //schema 정의 (model의 모양)
 const videoSchema = new mongoose.Schema({
   title: { type: String, trim: true }, //{type: String}
+  fileUrl: { type: String, required: true },
   description: { type: String, trim: true },
   createAt: { type: Date, required: true, default: Date.now },
   //()빼는 이유는 바로 실행하고 싶지 않아서!

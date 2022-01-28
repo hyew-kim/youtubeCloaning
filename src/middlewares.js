@@ -1,3 +1,5 @@
+import multer from 'multer';
+
 export const localMiddleware = (req, res, next) => {
   //console.log('req: ', req.session);
   res.locals.loggedIn = Boolean(req.session.loggedIn);
@@ -18,3 +20,10 @@ export const publicOnlyMiddleware = (req, res, next) => {
   if (!req.session.loggedIn) return next();
   else res.redirect('/');
 };
+export const avatorUpload = multer({ dest: 'uploads/avators/' });
+export const videoUpload = multer({
+  dest: 'uploads/videos/',
+  limits: {
+    fileSize: 10000000,
+  },
+});
