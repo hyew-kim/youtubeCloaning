@@ -145,6 +145,7 @@ export const finishGithubLogin = async (req, res) => {
       user = await User.create({
         email: emailObj.email,
         socialOnly: true,
+        avatarUrl: userData.avatar_url,
         username: userData.login,
         password: '',
         name: userData.name,
@@ -158,7 +159,8 @@ export const finishGithubLogin = async (req, res) => {
     return res.redirect('/login');
   }
 };
-
-export const logout = (req, res) => {};
-export const remove = (req, res) => res.send('Remove');
+export const logout = (req, res) => {
+  req.session.destroy();
+  return res.redirect('/');
+};
 export const see = (req, res) => res.send(`see profile ${req.params.id}`);

@@ -2,8 +2,8 @@ extends base
 block content
 	em=errorMessage
 	form(method="POST", enctype ="multipart/form-data")
-		label(for="avator") Avatar 
-		input(name="avator", id="avatar", type="file", accept="image/*")
+		label(for="avatar") Avatar 
+		input(name="avatar", id="avatar", type="file", accept="image/*")
 		input(name="email", placeholder="Email",type="email", required, value=loggedInUser.email)
 		input(name="username",placeholder="Username", type="text", required, value=loggedInUser.username)
 		input(name="name", placeholder="Name",type="text", required, value=loggedInUser.name)

@@ -20,7 +20,7 @@ export const publicOnlyMiddleware = (req, res, next) => {
   if (!req.session.loggedIn) return next();
   else res.redirect('/');
 };
-export const avatorUpload = multer({ dest: 'uploads/avators/' });
+export const avatarUpload = multer({ dest: 'uploads/avatars/' });
 export const videoUpload = multer({
   dest: 'uploads/videos/',
   limits: {
