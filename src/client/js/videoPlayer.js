@@ -1,16 +1,18 @@
 const video = document.querySelector('video');
 const playBtn = document.getElementById('play');
 const muteBtn = document.getElementById('mute');
-const time = document.getElementById('time');
+const currentime = document.getElementById('currentime');
+const totalTime = document.getElementById('totalTime');
 const volumeRange = document.getElementById('volume');
+const timeline = document.getElementById('timeline');
+const fullScreenBtn = document.getElementById('fullScreen');
+const videoControls = document.getElementById('videoControls');
 
 const handlePlayClick = function (evt) {
   if (video.paused) video.play();
   else video.pause();
+  playBtn.innerText = video.paused ? 'Play' : 'Pause';
 };
-const handlePlay = (evt) => (playBtn.innerText = 'Pause');
-const handlePause = (evt) => (playBtn.innerText = 'Play');
-
 let currentVolume = 0.5;
 const setVolumn = (value) => {
   volumeRange.value = value;
@@ -38,9 +40,52 @@ const handleRange = function (evt) {
   }
   setVolumn(value);
 };
+const formatTime = (value) => new Date(value * 1000).toISOString().substring(11, 19);
+
+const handleLoadedMetadata = function () {
+  const duration = Math.floor(video.duration);
+
+  totalTime.innerText = formatTime(duration);
+  currentime.innerText = formatTime(0);
+  timeline.max = duration;
+};
+const handleTimeUpdate = function () {
+  const time = Math.floor(video.currentTime);
+  currentime.innerText = formatTime(time);
+  timeline.value = time;
+  //console.log(video.readyState);
+};
+const handleTimeline = function (evt) {
+  const {
+    target: { value },
+  } = evt;
+  video.currentTime = value;
+};
+const handleFullScreen = function () {
+  const isFullScreen = document.fullscreenElement;
+  if (isFullScreen) {
+    document.exitFullscreen();
+    fullScreenBtn.innerText = 'Enter Full Screen';
+  } else {
+    document.getElementById('videoContainer').requestFullscreen();
+    fullScreenBtn.innerText = 'Exit Full Screen';
+  }
+};
+let timerId = '';
+const handleMousemove = function () {
+  //move 없을 때만 class remove 실행
+  clearTimeout(timerId);
+  video.classList.add('showing');
+  timerId = setTimeout(function () {
+    video.classList.remove('showing');
+  }, 1000 * 4);
+};
 
 playBtn.addEventListener('click', handlePlayClick);
 muteBtn.addEventListener('click', handleMute);
-video.addEventListener('play', handlePlay);
-video.addEventListener('pause', handlePause);
 volumeRange.addEventListener('input', handleRange);
+video.addEventListener('loadedmetadata', handleLoadedMetadata);
+video.addEventListener('timeupdate', handleTimeUpdate);
+timeline.addEventListener('input', handleTimeline);
+fullScreenBtn.addEventListener('click', handleFullScreen);
+video.addEventListener('mousemove', handleMousemove);
