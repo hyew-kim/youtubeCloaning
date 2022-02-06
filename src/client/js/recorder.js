@@ -17,18 +17,20 @@ const handleStop = () => {
   startBtn.removeEventListener('click', handleStop);
   startBtn.addEventListener('click', handleDownload);
   recorder.stop();
-  recorder.ondataavailable = (evt) => {
-    recordedData = evt.data;
-    video.srcObject = null;
-    video.src = URL.createObjectURL(recordedData);
-    video.play();
-  };
 };
 const handleStart = () => {
   startBtn.innerText = 'Stop Recording';
   startBtn.removeEventListener('click', handleStart);
   startBtn.addEventListener('click', handleStop);
   recorder = new MediaRecorder(stream);
+  //handler 미리 만들고 녹화 시작하기!
+  recorder.ondataavailable = (evt) => {
+    recordedData = URL.createObjectURL(evt.data);
+    //createObjectURL: 브라우저의 메모리 상에 있는 파일에 접근할 수 있는 방법
+    video.srcObject = null;
+    video.src = recordedData;
+    video.play();
+  };
   recorder.start();
 };
 
